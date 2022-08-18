@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const GetVehicle = () => {
   const [pid, setPid] = useState("");
   const [sid, setSid] = useState(null);
+  const [load, setLoaded] = useState(false);
   const getParkId = () => {
-    console.log("called");
-    // fetch(
-    //     "https://jsonplaceholder.typicode.com/users")
-    //                 .then((res) => res.json())
-    //                 .then((json) => {
-    //                     this.setState({
-    //                         items: json,
-    //                         DataisLoaded: true
-    //                     });
-    //                 })
+    axios
+      .post("http://localhost:3000/api/payment", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        parking_id: sid,
+      })
+      .then((response) => setPid(response.data.data.amount), setLoaded(true));
   };
 
   const handleChange = (e) => {
@@ -26,14 +26,15 @@ const GetVehicle = () => {
       <input
         style={{ width: "170px", height: "25px", padding: "10px" }}
         type="text"
-        onChange={(e) => handleChange(e)}
-        placeholder="Enter User Id"
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder="Enter Parking Id"
       />
       <br />
       <br />
       <button onClick={getParkId}>Submit</button>
       <br />
       <br />
+      {load && <div>Amount = {pid}</div>}
       <Link to="/">Home</Link>
     </div>
   );

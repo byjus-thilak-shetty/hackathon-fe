@@ -8,7 +8,8 @@ const Parking = (props) => {
   const [vehicle, setVehicle] = useState("");
   const [uid, setUid] = useState("");
   const [vno, setVno] = useState("");
-
+  const [id, setId] = useState(null);
+  const [load, setLoad] = useState(false);
   const apiCall = () => {
     //     fetch('https://samplewebsite.com/API/', {
     //   method: 'POST',
@@ -27,10 +28,10 @@ const Parking = (props) => {
           "Content-Type": "application/json",
         },
         phone_number: uid,
-        vehicle_number: vehicle,
-        vehicle_type: vno,
+        veahicle_number: vehicle,
+        veahicle_type: vno,
       })
-      .then((response) => console.log(response));
+      .then((response) => setId(response.data.data.id), setLoad(true));
   };
 
   const handleChangeVehicle = (event) => {
@@ -73,6 +74,7 @@ const Parking = (props) => {
       <br />
       <br />
       <button onClick={apiCall}> Submit </button>
+      {load && <div>Remember Parking id :{id}</div>}
       <Link to="/">
         <h5>Home</h5>
       </Link>
